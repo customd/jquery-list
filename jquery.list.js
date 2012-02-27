@@ -23,6 +23,7 @@
 	var defaults = {
 		headerSelector	: 'dt',
 		bodySelector	: 'dd',
+		scrollTarget	: null,
 		zIndex			: 1
 	};
 	
@@ -52,73 +53,85 @@
 			 * List element scroll handler event. Called to animate and substitute heading blocks.
 			 */
 			scroll : function(){
-				var $this = $(this),data = $this.data(plugin_name);
 				
-				if( data ){
+				// Get the data and elements to run this scroll method on.
+				var $this = $(this),data = $this.data(plugin_name+'-target'), elements = data;
+								
+				// Loop over each of the elements.
+				for( var i in elements ){
 					
-					var newHeader		= null,
-						currentHeader	= data.headers.eq( data.currentHeader ),
-						nextHeader		= data.currentHeader >= data.headers.length ? null : data.headers.eq( data.currentHeader+1 ),
-						prevHeader		= data.currentHeader <= 0 ? null : data.headers.eq( data.currentHeader-1 );
+					$this = $(elements[i]);
 					
-					// Make sure the container top position is fresh.
-					data.containerTop	= $this.offset().top + parseInt($this.css('marginTop'),10) + parseInt($this.css('borderTopWidth'),10);
-					data.fakeHeader.css('top',0);
+					// Get the data for $this element.
+					data = $this.data(plugin_name);
 					
-					// Check the position of the current header rather than the previous header.
-					if( prevHeader !== null ){
+					// If we've got valid data.
+					if( data ){
 						
-					 	var top		= currentHeader.offset().top,
-					 		height	= currentHeader.outerHeight();
-					 	
-					 	if( top > data.containerTop ){
-					 		
-					 		data.fakeHeader.css('top',(top-height)-data.containerTop+data.borderTop);
-					 		data.fakeHeader.html(prevHeader.html());
-					 		data.currentHeader = data.currentHeader-1;
-					 	}
-					 	
-					 	if( (top-height) > data.containerTop ){
-					 		
-					 		data.fakeHeader.css('top',data.borderTop);
-					 		newHeader = data.currentHeader-1;
-					 	}
-					 	
-					}
-					
-					// Check the position of the next header element.
-					if( nextHeader !== null ){
-					 	
-					 	var top		= nextHeader.offset().top,
-					 		height	= nextHeader.outerHeight();
-					 	
-					 	if( (top-height) < data.containerTop ){
-					 		
-					 		data.fakeHeader.css('top',(top-height)-data.containerTop+data.borderTop);
-					 		data.fakeHeader.html(currentHeader.html());
-					 	}
-					 	
-					 	if( top < data.containerTop ){
-					 		
-					 		data.fakeHeader.css('top',data.borderTop);
-					 		newHeader = data.currentHeader+1;
-					 	}
-					}
+						var newHeader		= null,
+							currentHeader	= data.headers.eq( data.currentHeader ),
+							nextHeader		= data.currentHeader >= data.headers.length ? null : data.headers.eq( data.currentHeader+1 ),
+							prevHeader		= data.currentHeader <= 0 ? null : data.headers.eq( data.currentHeader-1 );
+						
+						// Make sure the container top position is fresh.
+						data.containerTop	= $this.offset().top + parseInt($this.css('marginTop'),10) + parseInt($this.css('borderTopWidth'),10);
+						data.fakeHeader.css('top',0);
+						
+						// Check the position of the current header rather than the previous header.
+						if( prevHeader !== null ){
 							
-					// Now assign the contents of the previous header.
-					if( newHeader !== null ){
+						 	var top		= currentHeader.offset().top,
+						 		height	= currentHeader.outerHeight();
+						 	
+						 	if( top > data.containerTop ){
+						 		
+						 		data.fakeHeader.css('top',(top-height)-data.containerTop+data.borderTop);
+						 		data.fakeHeader.html(prevHeader.html());
+						 		data.currentHeader = data.currentHeader-1;
+						 	}
+						 	
+						 	if( (top-height) > data.containerTop ){
+						 		
+						 		data.fakeHeader.css('top',data.borderTop);
+						 		newHeader = data.currentHeader-1;
+						 	}
+						 	
+						}
 						
-						var $header = data.headers.eq(newHeader);
+						// Check the position of the next header element.
+						if( nextHeader !== null ){
+						 	
+						 	var top		= nextHeader.offset().top,
+						 		height	= nextHeader.outerHeight();
+						 	
+						 	if( (top-height) < data.containerTop ){
+						 		
+						 		data.fakeHeader.css('top',(top-height)-data.containerTop+data.borderTop);
+						 		data.fakeHeader.html(currentHeader.html());
+						 	}
+						 	
+						 	if( top < data.containerTop ){
+						 		
+						 		data.fakeHeader.css('top',data.borderTop);
+						 		newHeader = data.currentHeader+1;
+						 	}
+						}
+								
+						// Now assign the contents of the previous header.
+						if( newHeader !== null ){
+							
+							var $header = data.headers.eq(newHeader);
+							
+							data.currentHeader = newHeader;
+							data.fakeHeader.html($header.html());
+							
+							// Trigger the headingChange event.
+							$this.trigger('headingChange',[newHeader,$header]);
+						}
 						
-						data.currentHeader = newHeader;
-						data.fakeHeader.html($header.html());
-						
-						// Trigger the headingChange event.
-						$this.trigger('headingChange',[newHeader,$header]);
+						// Save the new data.
+						$this.data(plugin_name,data);
 					}
-					
-					// Save the new data.
-					$this.data(plugin_name,data);
 				}
 			}
 		}
@@ -169,8 +182,22 @@
 						fakeHeader		: null,
 						borderLeft		: parseInt( $this.css("borderLeftWidth"), 10 ),
 						borderTop		: parseInt( $this.css("borderTopWidth"), 10 ),
+						scrolltarget	: $(settings.scrollTarget).length < 1 ? $this : $(settings.scrollTarget),
 						scrolllist		: []
 					}
+					
+					_private.log( data.scrolltarget.length );
+					
+					// Add the main target to the scrolltargets data.
+					data.scrolltarget.each(function(){
+						var tmp_data = $(this).data(plugin_name+'-target');
+						if( typeof tmp_data == 'object' ){
+							tmp_data.push( $this );
+						} else {
+							tmp_data = [$this];
+						}
+						$(this).data(plugin_name+'-target',tmp_data);
+					});
 					
 					// Add the container class, and the base HTML structure
 					$this.addClass('-'+plugin_name+'-container');
@@ -181,8 +208,8 @@
 				    data.fakeHeader		= data.headers.eq(0).clone().removeAttr('id').addClass('-'+plugin_name+'-fakeheader');
 				    
 				    // bind a scroll event and change the text of the fake heading
-				    $this.bind('scroll.'+plugin_name,_private.events.scroll);
-				    					
+				    data.scrolltarget.bind('scroll.'+plugin_name,_private.events.scroll);
+				    				    		
 					// Set the fake headers
 				    data.fakeHeader.css({
 				    	position	: 'absolute',
@@ -193,7 +220,8 @@
 				    });
 				    
 				    // Add the fake header before all other children, and set the HTML.
-				    $this.data(plugin_name,data).wrap('<div class="ui-'+plugin_name+'" style="overflow: hidden; position: relative;" />').before( data.fakeHeader );
+				    data.headers.eq(0).before( data.fakeHeader );
+				    $this.data(plugin_name,data).wrap('<div class="ui-'+plugin_name+'" style="overflow: hidden; position: relative;" />');
 				}
 			});
 		},
@@ -238,12 +266,12 @@
 						// Get the new header.
 						$header = data.headers.eq(newHeader);
 						
-						var scrollTo = $header.position().top + $this.scrollTop();
+						var scrollTo = $header.position().top + data.scrolltarget.scrollTop();
 						
 						// If we're not animating, we need to set the element directly.
 						if( speed == undefined ){
 							
-							$this.scrollTop( scrollTo );
+							data.scrolltarget.scrollTop( scrollTo );
 													
 							// Set as the current header.
 							data.currentHeader = newHeader;
@@ -257,7 +285,7 @@
 							
 						} else {
 							// If we are animating, the scroll event will fire... maybe.
-							$this.animate({scrollTop:scrollTo},speed);
+							data.scrolltarget.animate({scrollTop:scrollTo},speed);
 						}
 					}
 				}
@@ -346,9 +374,10 @@
 					// reattach this element to its parent, then delete list div.
 					$this.removeData(plugin_name)
 						 .removeClass('-'+plugin_name+'-container')
-				    	 .unbind('.'+plugin_name)
+						 .unbind('.'+plugin_name)
 						 .parent().after($this);
-					$this.siblings('.ui-'+plugin_name).remove();
+					$this.find('.ui-'+plugin_name).remove();
+					data.scrolltarget.unbind('.'+plugin_name);	
 				}
 			});
 		}
