@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Floating List Header - Documentation</title>
+
+<script type="text/javascript" src="../resources/javascripts/jquery-1.6.1.min.js"></script>
+<script type="text/javascript" src="../resources/javascripts/prettify.js"></script>
+<script type="text/javascript" src="../resources/javascripts/docs.js"></script>
+<script type="text/javascript" src="./files/jquery.list.js"></script>
+
+<link rel="stylesheet" ref="../resources/stylesheets/prettify.css"/>
+<link rel="stylesheet" href="../resources/stylesheets/docs.css"/>
+<link rel="stylesheet" href="./files/list.css"/>
+
+
+</head>
+
+<body>
+	<!-- Documentation about a plugin -->
+	<h1>Floating List Header Plugin</h1>
+	<author><a href="http://www.digitalfusion.co.nz/about/">Phil Taylor & Sam Sehnert</a></author>
+	<version>1.1.2 (<a href="changelog.html">changelog</a>)</version>
+	<!--<license><a href="http://www.gnu.org/licenses/">GPL-3</a></license>-->
+
+	<p>This is a <a href="http://jquery.com/">jQuery</a> plugin which allows the user to create a list with floating headings while scrolling, a-la iOS &amp; iCal day view. The plugin allows arbitrary markup of the header and list items, and will work nicely with nested elements.</p>
+		
+	<h2>Contents</h2>
+	<ul class="quicklink">
+		<li><a href="#demos">Demos</a></li>
+		<li><a href="#download">Download</a></li>
+		<li><a href="#config">Configuration</a></li>
+		<li><a href="#events">Events</a></li>
+		<li><a href="#methods">Methods</a></li>
+		<li><a href="#compatibility">Compatibility</a></li>
+	</ul>
+	
+	<h2>Getting Started</h2>
+
+	<p>Here is the simplest possible implementation:</p>
+	<code class="prettyprint lang-javascript">$('dl').list();</code>
+
+	<p>Here is some basic html you could use for this plugin:</p>
+	<code class="prettyprint lang-html">&lt;dl&gt;
+    &lt;dt&gt;Title&lt;/dt&gt;
+    &lt;dd&gt;Item One&lt;/dd&gt;
+    &lt;dd&gt;Item Two&lt;/dd&gt;
+    &lt;!-- Etc... --&gt;
+&lt;/dl&gt;</code>
+
+	
+	<h2><a name="demos">Demos</a></h2>
+	<ul>
+		<li><a href="./demo-basic.html">Basic Example</a></li>
+	</ul>
+	
+	<h2><a name="config">Configuration Properties</a></h2>
+	<div class="table-holder config">
+		<table>
+			<thead>
+				<tr><th>Property</th><th>Default</th><th>Description</th></tr>
+			</thead>
+			<tbody>
+				<tr><td><a href="#selectors">headerSelector</a></td><td>dt</td><td>The jQuery selector used to identify header elements.</td></tr>
+				<tr><td><a href="#selectors">bodySelector</a></td><td>dd</td><td>The jQuery selector used to identify body elements.</td></tr>
+				<tr><td>zIndex</td><td>1</td><td>The zIndex for the floating header elements. Should be greater than all body parts.</td></tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<h3><a name="selectors">Header/Body Selectors.</a></h3>
+	<p>You can use any jQuery selector in order to define which elements are considered list body items, and which are considered list headers.</p>
+	
+	<code class="prettyprint lang-javascript">$('dl').list({
+	headerSelector : 'li.header',
+	bodySelector   : 'li'
+});</code>
+	<code class="prettyprint lang-html">&lt;ul&gt;
+    &lt;li class="header"&gt;Title&lt;/li&gt;
+    &lt;li&gt;Item One&lt;/li&gt;
+    &lt;li&gt;Item Two&lt;/li&gt;
+    &lt;!-- Etc... --&gt;
+&lt;/ul&gt;</code>
+	
+	<h2><a name="events">Events</a></h2>
+	<div class="table-holder">
+		<table>
+			<thead>
+				<tr><th>Event</th><th>Parameters</th><th>Details</th></tr>
+			</thead>
+			<tbody>
+				<tr><td><a href="#headingChange">headingChange</a></td><td><em>Event, Index, Element</em></td><td>This event will be triggered whenever the heading changes to a new category.</td></tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<h3><a name="headingChange">headingChange</a></h3>
+	<p>Triggered when the list title is completely visible when scrolling up, and completely hidden when scrolling down. The event will pass the event object as the first parameter, the index of the heading element in the heading collection (i.e., 2 for the second heading element), and the actual heading element itself.</p>
+	
+	<code class="prettyprint lang-javascript">$('dl').list().bind('headingChange',function( event, index, heading ){
+    /* Do something */
+});</code>
+	
+	<h2><a name="methods">Methods</a></h2>
+	<div class="table-holder">
+		<table>
+			<thead>
+				<tr><th>Method</th><th>Return Value</th><th>Description</th></tr>
+			</thead>
+			<tbody>
+				<tr><td>.list( 'option'<em>, [ Object ]</em> )<br />.list( 'option'<em>, [ String, String ]</em> )</td><td><em>jQuery</em><br /><em>String</em></td><td>Takes a config object, or config string/value and applies the configuration option to the calendar.</td></tr>
+				<tr><td>.list( 'version'<em>, [ Object ]</em> )</td><td><em>String</em></td><td>Returns the version number of the currently installed list plugin.</td></tr>
+				<tr><td>.list( 'destroy' )</td><td><em>jQuery</em></td><td>Removes the list from the targeted element, and returns the element to its pre-initialisation state.</td></tr>
+				<tr><td>.list( 'header' )</td><td><em>Integer</em></td><td>Gets the index position of the header (relative to the headers collection).</td></tr>
+				<tr><td>.list( 'scrollTo'<em>, Integer</em> )<br />.list( 'scrollTo'<em>, Integer, [ Mixed ]</em> )</td><td><em>jQuery</em></td><td>Call to scroll the list to the top of a specific heading index, optionally animating the scroll.</td></tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<!-- This part is only valid for ONLINE documentation, not downloadable docs.
+	<h2>Download</h2>
+	<h3>Packaged Release</h3>
+	<p>Contains all files required for this plugin, including documentation, addons and external resources.</p>
+	
+	<a href="jquery.plugin.zip">jquery.plugin.zip</a>
+	
+	<h3>Individual Downloads</h3>
+	<p>Download and place the required files and any optional files in a directory that is accessable by your web server.</p>
+	<h4>Required</h4>
+	<ul>
+		<li><a href="http://docs.jquery.com/Downloading_jQuery#Download_jQuery">jQuery</a> (1.0.0 or higher)</li>
+		<li><a href="jquery.plugin.min.zip">jquery.plugin.min.zip</a> (&#8734;kb, Minified for production. Place this file on your server.)</li>
+	</ul>
+	
+	<h4>Optional/Add-Ons</h4>
+	<ul>
+		<li><a href="jquery.plugin-1.0.0.js">jquery.plugin-1.0.0.js</a> (&#8734;kb, Development version)</li>
+		<li><a href="jquery.optionalplugin.js">jquery.optionalplugin.js</a> (&#8734;kb, <a href="#linktodocumentation">Optional plugin name</a>)</li>
+	</ul>
+	-->
+		
+	<h2><a name="compatibility">Compatibility</a></h2>
+	<p>This plugin has been tested, and verified working in the following browsers with JavaScript enabled.</p>
+	<ul>
+		<li>Safari 4+</li>
+		<li>Chrome 9+</li>
+		<li>Internet Explorer 8+</li>
+	</ul>
+	<a href="http://docs.jquery.com/Browser_Compatibility">jQuery Browser Compatibility</a>
+</body>
+
+</html>
