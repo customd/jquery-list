@@ -1,48 +1,92 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>Basic List Demo</title>
-		<script type="text/javascript" src="../resources/javascripts/jquery-1.6.1.min.js"></script>
-		<script type="text/javascript" src="./files/jquery.list.js"></script>
-		
+		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+		<script type="text/javascript" src="../jquery.list.js"></script>
 		
 		<script type="text/javascript">
 			
 			$(function(){
 				
-				$('#container dl').list();
+				// Add a live click handler for the button.
+				$('#container dt button').live('click',function(){
+					switch( $(this).attr('name') ){
+						
+						case 'top' :
+							$('#container dl').list('scrollTo',0,'slow','swing');
+						break;
+						
+						case 'next':
+							var index = $('#container dl').list('header')+1;
+							$('#container dl').list('scrollTo',index,'fast','swing');
+						break;
+					}
+				});
 				
+				// Initialise the list.
+				$('#container dl').list().bind('headingChange',function(){
+				
+					// Add the 'next' button to the fake header element.
+					$('#container .-list-fakeheader').append('<button name="next">Next</button>');
+				});
+				
+				$('#container dt:first').append('<button name="next">Next</button>');
+				$('#container dt:last').append('<button name="top">Top</button>');
 			});
 			
 		</script>
 		
 		<style>			
-			dl{
-				border: 1px solid black;
+			dl.list{
+				border: 1px solid #2683BD;
 				height: 350px;
 				margin: 0;
 				padding: 0;
+				overflow: hidden;
 				overflow-y: scroll;
 				position: relative;
+				font-family: sans-serif;
+				font-size: 1em;
 			}
-			
-			dt{
+			dl.list dt, .-list-fakeheader{
 				margin: 0;
-				background: black;
+				background: #2683BD url(../docs/resources/images/overlay-sprite.png) repeat-x 0 -50px;
+				font-weight: bold;
+				text-shadow: -1px -1px 0px rgba( 0, 0, 0, 0.2 ), 1px 1px 0px rgba( 255, 255, 255, 0.3 );
 				color: white;
-				padding: 5px;
-				border-bottom: 1px solid white;
+				padding: 8px 5px;
+				border-bottom: 1px solid #1D6FA2;
 			}
-			dd{
+			dl.list dd{
 				padding: 5px;
 				margin: 0;
 				border-bottom: 1px solid #ddd;
+				font-size: 0.8em;
+			}
+			dl.list dt button, .-list-fakeheader button{
+				border: 1px solid #2683BD;
+				background: #2683BD url(../docs/resources/images/overlay-sprite.png) repeat-x 0 -50px;
+				font-weight: bold;
+				text-shadow: -1px -1px 0px rgba( 0, 0, 0, 0.2 ), 1px 1px 0px rgba( 255, 255, 255, 0.3 );
+				color: white;
+				padding: 3px 8px;
+				margin: -3px 0px;
+				float: right;
+				border-radius: 5px;
+				font-size: 0.85em;
+				cursor: pointer;
+			}
+			dl.list dt button:hover, .-list-fakeheader button:hover{
+				background-color: #1D6FA2;
 			}
 		</style>
 	</head>
 	<body>
-		<h1>List Test</h1>
+		<h1>Basic List</h1>
+		<p>This list has dynamically added buttons which scroll to the next heading when clicked.</p>
 		<div id="container">
-			<dl>
+			<dl class="list">
 				<dt>List Title One</dt>
 				<dd>One</dd>
 				<dd>Two</dd>

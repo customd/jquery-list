@@ -2,16 +2,28 @@
 <html>
 <head>
 <title>Floating List Header - Changelog</title>
-<link rel="stylesheet" href="../resources/stylesheets/docs.css"/>
+<link rel="stylesheet" href="./resources/stylesheets/docs.css"/>
 </head>
 
 <body>
 	<!-- Documentation about a plugin -->
 	<h1>Calendar</h1>
-	<author><a href="http://www.digitalfusion.co.nz/about/#author">Phil Taylor & Sam Sehnert</a></author>
-	<version>1.1.0</version>
+	<author><a href="http://www.digitalfusion.co.nz/about/">Sam Sehnert, Phil Taylor</a></author>
+	<version>1.1.2</version>
 	
 	<dl>
+		<dt>Version 1.2.0</dt>
+		<dd>Added ability to define scrolltarget element. Plugin watches for scrolling on this element, and positions header based on scroll level.</dd>
+		<dd>Added ability to set animation easing and completion function for scrollTo method.</dd>
+		<dd>Fixed triggering of headingChange method so that it would trigger even when reversing mid scroll.</dd>
+		<dd>Fixed styling to pick up computed style of header element.</dd>
+		
+		<dt>Version 1.1.2</dt>
+		<dd>Added scrollTo method for automatically scrolling to a given heading index.</dd>
+		
+		<dt>Version 1.1.1</dt>
+		<dd>Updated unload script so destroying plugin and restoring DOM is possible.</dd>
+		
 		<dt>Version 1.1.0</dt>
 		<dd>Added headingChange event, triggers when the calendars heading changes from one to another.</dd>
 		<dd>Added plugin log method for debugging information.</dd>

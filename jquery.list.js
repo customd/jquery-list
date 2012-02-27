@@ -23,7 +23,6 @@
 	var defaults = {
 		headerSelector	: 'dt',
 		bodySelector	: 'dd',
-		scrollTarget	: null,
 		zIndex			: 1
 	};
 	
@@ -33,6 +32,7 @@
 	// or small utility functions for parsing data etc that isn't useful
 	// outside the context of the plugin code itself.
 	var _private = {
+		
 		log : function(){
 			// SAFELY call console.log without fear of errors
 			// also provides an override for turning off all plugin console output.
@@ -47,91 +47,168 @@
 				}
 			}
 		},
+		
+		/**
+		 * Get the scrollbar width so we know how much space to allocate.
+		 *
+		 * @return int : Returns the width of the scrollbars in pixels.
+		 */
+		scrollbarSize : function() {
+			
+			// Use the cached version if exists.
+			if (_private._scrollbarSize===false) {
+			
+				var $doc = $(document.body),
+				
+				// Set the overflow to hidden, scroll and measure difference.
+				w =$doc.css({overflow:'hidden'}).width();
+				w-=$doc.css({overflow:'scroll'}).width();
+				
+				// Add support for IE in Standards mode.
+				if(!w) w=$doc.width()-$doc[0].clientWidth;
+				
+				// Restore the overflow setting.
+				$doc.css({overflow:''});
+				
+				// Cache the scrollbar width.
+				_private._scrollbarSize = w;
+			}
+			
+			// Return the width.
+			return _private._scrollbarSize;
+		},
+		
+		// Cache the scrollbar size here.
+		_scrollbarSize : false,
+		
+		/**
+		 * Gets all computed styles for the current element.
+		 */
+		getStyles : function(){
+		    var dom = $(this).get(0);
+		    var style;
+		    var returns = {};
+		    if(window.getComputedStyle){
+		        var camelize = function(a,b){
+		            return b.toUpperCase();
+		        };
+		        _private.log( dom, window.getComputedStyle(dom, null) );
+		        style = window.getComputedStyle(dom, null);
+		        for(var i = 0, l = style.length; i < l; i++){
+		            var prop = style[i],
+		            	camel = prop.toString().replace(/\-([a-z])/g, camelize),
+		            	val = style.getPropertyValue(prop);
+		            returns[camel] = val;
+		        };
+		        return returns;
+		    };
+		    if(style = dom.currentStyle){
+		        for(var prop in style){
+		            returns[prop] = style[prop];
+		        };
+		        return returns;
+		    };
+		    if(style = dom.style){
+		      for(var prop in style){
+		        if(typeof style[prop] != 'function'){
+		          returns[prop] = style[prop];
+		        };
+		      };
+		      return returns;
+		    };
+		    return returns;
+		},
+		
+		// Contains events for this plugin.
 		events : {
+			
+			/**
+			 * Window resize (should also be called when resizing the target element).
+			 */
+			resize : function(){
+				var $this = $(this),data = $this.data(plugin_name);
+				
+				if( data ){
+					data.fakeHeader.width(data.headers.width()-_private.scrollbarSize());
+				}
+			},
 			
 			/**
 			 * List element scroll handler event. Called to animate and substitute heading blocks.
 			 */
 			scroll : function(){
+				var $this = $(this),data = $this.data(plugin_name);
 				
-				// Get the data and elements to run this scroll method on.
-				var $this = $(this),data = $this.data(plugin_name+'-target'), elements = data;
-								
-				// Loop over each of the elements.
-				for( var i in elements ){
+				if( data ){
 					
-					$this = $(elements[i]);
+					var newHeader		= null,
+						currentHeader	= data.headers.eq( data.currentHeader ),
+						nextHeader		= data.currentHeader >= data.headers.length ? null : data.headers.eq( data.currentHeader+1 ),
+						prevHeader		= data.currentHeader <= 0 ? null : data.headers.eq( data.currentHeader-1 ),
+						trigger			= false;
 					
-					// Get the data for $this element.
-					data = $this.data(plugin_name);
+					// Make sure the container top position is fresh.
+					data.borderTop		= parseInt($this.css('borderTopWidth'),10)
+					data.containerTop	= $this.offset().top + parseInt($this.css('marginTop'),10) + data.borderTop;
+					data.fakeHeader.css('top',data.borderTop);
 					
-					// If we've got valid data.
-					if( data ){
+					// Check the position of the current header rather than the previous header.
+					if( prevHeader !== null ){
 						
-						var newHeader		= null,
-							currentHeader	= data.headers.eq( data.currentHeader ),
-							nextHeader		= data.currentHeader >= data.headers.length ? null : data.headers.eq( data.currentHeader+1 ),
-							prevHeader		= data.currentHeader <= 0 ? null : data.headers.eq( data.currentHeader-1 );
-						
-						// Make sure the container top position is fresh.
-						data.containerTop	= $this.offset().top + parseInt($this.css('marginTop'),10) + parseInt($this.css('borderTopWidth'),10);
-						data.fakeHeader.css('top',0);
-						
-						// Check the position of the current header rather than the previous header.
-						if( prevHeader !== null ){
-							
-						 	var top		= currentHeader.offset().top,
-						 		height	= currentHeader.outerHeight();
-						 	
-						 	if( top > data.containerTop ){
-						 		
-						 		data.fakeHeader.css('top',(top-height)-data.containerTop+data.borderTop);
-						 		data.fakeHeader.html(prevHeader.html());
-						 		data.currentHeader = data.currentHeader-1;
-						 	}
-						 	
-						 	if( (top-height) > data.containerTop ){
-						 		
-						 		data.fakeHeader.css('top',data.borderTop);
-						 		newHeader = data.currentHeader-1;
-						 	}
-						 	
-						}
-						
-						// Check the position of the next header element.
-						if( nextHeader !== null ){
-						 	
-						 	var top		= nextHeader.offset().top,
-						 		height	= nextHeader.outerHeight();
-						 	
-						 	if( (top-height) < data.containerTop ){
-						 		
-						 		data.fakeHeader.css('top',(top-height)-data.containerTop+data.borderTop);
-						 		data.fakeHeader.html(currentHeader.html());
-						 	}
-						 	
-						 	if( top < data.containerTop ){
-						 		
-						 		data.fakeHeader.css('top',data.borderTop);
-						 		newHeader = data.currentHeader+1;
-						 	}
-						}
-								
-						// Now assign the contents of the previous header.
-						if( newHeader !== null ){
-							
-							var $header = data.headers.eq(newHeader);
-							
-							data.currentHeader = newHeader;
-							data.fakeHeader.html($header.html());
-							
-							// Trigger the headingChange event.
-							$this.trigger('headingChange',[newHeader,$header]);
-						}
-						
-						// Save the new data.
-						$this.data(plugin_name,data);
+					 	var top		= currentHeader.offset().top,
+					 		height	= currentHeader.outerHeight();
+					 	
+					 	if( top > data.containerTop ){
+					 		
+					 		data.fakeHeader.css('top',(top-height)-data.containerTop+data.borderTop);
+					 		data.fakeHeader.html(prevHeader.html());
+					 		data.currentHeader = data.currentHeader-1;
+					 		trigger = true;
+					 	}
+					 	
+					 	if( (top-height) > data.containerTop ){
+					 		
+					 		data.fakeHeader.css('top',data.borderTop);
+					 		newHeader = data.currentHeader-1;
+					 	}
+					 	
 					}
+					
+					// Check the position of the next header element.
+					if( nextHeader !== null ){
+					 	
+					 	var top		= nextHeader.offset().top,
+					 		height	= nextHeader.outerHeight();
+					 	
+					 	if( (top-height) < data.containerTop ){
+					 		
+					 		data.fakeHeader.css('top',(top-height)-data.containerTop+data.borderTop);
+					 	}
+					 	
+					 	if( top < data.containerTop ){
+					 		
+					 		data.fakeHeader.css('top',data.borderTop);
+					 		newHeader = data.currentHeader+1;
+					 	}
+					}
+							
+					// Now assign the contents of the previous header.
+					if( newHeader !== null ){
+						
+						var $header = data.headers.eq(newHeader);
+						
+						data.currentHeader = newHeader;
+						data.fakeHeader.html($header.html());
+						trigger = true;
+					}
+					
+					if( trigger ){
+						// Trigger the headingChange event.
+						$this.trigger('headingChange',[data.currentHeader,data.headers.eq(data.currentHeader)]);
+					}
+					
+					// Save the new data.
+					$this.data(plugin_name,data);
 				}
 			}
 		}
@@ -182,46 +259,31 @@
 						fakeHeader		: null,
 						borderLeft		: parseInt( $this.css("borderLeftWidth"), 10 ),
 						borderTop		: parseInt( $this.css("borderTopWidth"), 10 ),
-						scrolltarget	: $(settings.scrollTarget).length < 1 ? $this : $(settings.scrollTarget),
 						scrolllist		: []
 					}
-					
-					_private.log( data.scrolltarget.length );
-					
-					// Add the main target to the scrolltargets data.
-					data.scrolltarget.each(function(){
-						var tmp_data = $(this).data(plugin_name+'-target');
-						if( typeof tmp_data == 'object' ){
-							tmp_data.push( $this );
-						} else {
-							tmp_data = [$this];
-						}
-						$(this).data(plugin_name+'-target',tmp_data);
-					});
 					
 					// Add the container class, and the base HTML structure
 					$this.addClass('-'+plugin_name+'-container');
 					
 					// Grab some variables to set up the list.
 				    data.headers		= $this.find(data.settings.headerSelector);
-				    data.containerTop	= $this.offset().top + parseInt($this.css('marginTop'),10) + parseInt($this.css('borderTopWidth'),10);
+				    data.containerTop	= $this.offset().top + parseInt($this.css('marginTop'),10) + data.borderTop;
 				    data.fakeHeader		= data.headers.eq(0).clone().removeAttr('id').addClass('-'+plugin_name+'-fakeheader');
 				    
 				    // bind a scroll event and change the text of the fake heading
-				    data.scrolltarget.bind('scroll.'+plugin_name,_private.events.scroll);
-				    				    		
+				    $this.bind('scroll.'+plugin_name,_private.events.scroll);
+				    $(window).bind('resize.'+plugin_name,$.proxy(_private.events.resize,$this));
+				    				    			
 					// Set the fake headers
-				    data.fakeHeader.css({
+				    data.fakeHeader.css($.extend(_private.getStyles.apply(data.headers),{
 				    	position	: 'absolute',
-				    	left		: data.borderLeft,
 				    	top			: data.borderTop,
-				    	width		: data.headers.width(),
+				    	left		: data.borderLeft,
 				    	zIndex		: data.settings.zIndex
-				    });
-				    
+				    }));
+				   
 				    // Add the fake header before all other children, and set the HTML.
-				    data.headers.eq(0).before( data.fakeHeader );
-				    $this.data(plugin_name,data).wrap('<div class="ui-'+plugin_name+'" style="overflow: hidden; position: relative;" />');
+				    $this.data(plugin_name,data).wrap('<div class="ui-'+plugin_name+'" style="overflow: hidden; position: relative;" />').before( data.fakeHeader );
 				}
 			});
 		},
@@ -245,12 +307,14 @@
 		/**
 		 * Used to scroll to a new header element, or to retrieve the currently set header.
 		 *
-		 * @param int newHeader		: The index position of the header (relative to the headers collection).
-		 * @param mixed speed		: The animation speed of scrolling to the new header.
+		 * @param int newHeader			: The index position of the header (relative to the headers collection).
+		 * @param mixed speed			: The animation speed of scrolling to the new header.
+		 * @param mixed easing			: The animation easing to use.
+		 * @param function completion	: The animation completion function to call.
 		 *
 		 * @return collection : The collection that this was called with
 		 */
-		scrollTo : function( newHeader, speed ){
+		scrollTo : function( newHeader, speed, easing, completion ){
 			
 			return this.each(function(){
 				
@@ -266,12 +330,12 @@
 						// Get the new header.
 						$header = data.headers.eq(newHeader);
 						
-						var scrollTo = $header.position().top + data.scrolltarget.scrollTop();
+						var scrollTo = $header.position().top + $this.scrollTop() + data.borderTop;
 						
 						// If we're not animating, we need to set the element directly.
 						if( speed == undefined ){
 							
-							data.scrolltarget.scrollTop( scrollTo );
+							$this.scrollTop( scrollTo );
 													
 							// Set as the current header.
 							data.currentHeader = newHeader;
@@ -285,7 +349,7 @@
 							
 						} else {
 							// If we are animating, the scroll event will fire... maybe.
-							data.scrolltarget.animate({scrollTop:scrollTo},speed);
+							$this.animate({scrollTop:scrollTo},speed,easing,completion);
 						}
 					}
 				}
@@ -374,10 +438,9 @@
 					// reattach this element to its parent, then delete list div.
 					$this.removeData(plugin_name)
 						 .removeClass('-'+plugin_name+'-container')
-						 .unbind('.'+plugin_name)
+				    	 .unbind('.'+plugin_name)
 						 .parent().after($this);
-					$this.find('.ui-'+plugin_name).remove();
-					data.scrolltarget.unbind('.'+plugin_name);	
+					$this.siblings('.ui-'+plugin_name).remove();
 				}
 			});
 		}
