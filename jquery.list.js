@@ -1,19 +1,30 @@
 /** 
- * jQuery list plug-in 1.1.2
+ * jQuery list plug-in 1.2.0
+ * Copyright (C) 2012 Digital Fusion
  *
- * Allows easy implementation of an extremely flexible, 
- * extensible, and easily localizable graphical list  
- * interface as a jQuery plugin.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * @author Phil Taylor, Sam Sehnert, Digital Fusion 2011
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Sam Sehnert, Phil Taylor
  */
  
 (function($){
+	"use strict";
 	
 	// The name of your plugin. This is used to namespace your
 	// plugin methods, object data, and registerd events.
 	var plugin_name = 'list';
-	var plugin_version = '1.1.2';
+	var plugin_version = '1.2.0';
 	var plugin_logging = true;
 	
 	// Set up the plugin defaults.
@@ -80,45 +91,7 @@
 		
 		// Cache the scrollbar size here.
 		_scrollbarSize : false,
-		
-		/**
-		 * Gets all computed styles for the current element.
-		 */
-		getStyles : function(){
-		    var dom = $(this).get(0);
-		    var style;
-		    var returns = {};
-		    if(window.getComputedStyle){
-		        var camelize = function(a,b){
-		            return b.toUpperCase();
-		        };
-		        _private.log( dom, window.getComputedStyle(dom, null) );
-		        style = window.getComputedStyle(dom, null);
-		        for(var i = 0, l = style.length; i < l; i++){
-		            var prop = style[i],
-		            	camel = prop.toString().replace(/\-([a-z])/g, camelize),
-		            	val = style.getPropertyValue(prop);
-		            returns[camel] = val;
-		        };
-		        return returns;
-		    };
-		    if(style = dom.currentStyle){
-		        for(var prop in style){
-		            returns[prop] = style[prop];
-		        };
-		        return returns;
-		    };
-		    if(style = dom.style){
-		      for(var prop in style){
-		        if(typeof style[prop] != 'function'){
-		          returns[prop] = style[prop];
-		        };
-		      };
-		      return returns;
-		    };
-		    return returns;
-		},
-		
+				
 		// Contains events for this plugin.
 		events : {
 			
@@ -148,9 +121,8 @@
 						trigger			= false;
 					
 					// Make sure the container top position is fresh.
-					data.borderTop		= parseInt($this.css('borderTopWidth'),10)
-					data.containerTop	= $this.offset().top + parseInt($this.css('marginTop'),10) + data.borderTop;
-					data.fakeHeader.css('top',data.borderTop);
+					data.containerTop	= $this.offset().top + parseInt($this.css('marginTop'),10) + parseInt($this.css('borderTopWidth'),10);
+					data.fakeHeader.css('top',0);
 					
 					// Check the position of the current header rather than the previous header.
 					if( prevHeader !== null ){
@@ -160,7 +132,7 @@
 					 	
 					 	if( top > data.containerTop ){
 					 		
-					 		data.fakeHeader.css('top',(top-height)-data.containerTop+data.borderTop);
+					 		data.fakeHeader.css('top',(top-height)-data.containerTop);
 					 		data.fakeHeader.html(prevHeader.html());
 					 		data.currentHeader = data.currentHeader-1;
 					 		trigger = true;
@@ -168,7 +140,7 @@
 					 	
 					 	if( (top-height) > data.containerTop ){
 					 		
-					 		data.fakeHeader.css('top',data.borderTop);
+					 		data.fakeHeader.css('top',0);
 					 		newHeader = data.currentHeader-1;
 					 	}
 					 	
@@ -182,12 +154,12 @@
 					 	
 					 	if( (top-height) < data.containerTop ){
 					 		
-					 		data.fakeHeader.css('top',(top-height)-data.containerTop+data.borderTop);
+					 		data.fakeHeader.css('top',(top-height)-data.containerTop);
 					 	}
 					 	
 					 	if( top < data.containerTop ){
 					 		
-					 		data.fakeHeader.css('top',data.borderTop);
+					 		data.fakeHeader.css('top',0);
 					 		newHeader = data.currentHeader+1;
 					 	}
 					}
@@ -252,13 +224,12 @@
 					// Create the data object.
 					data = {
 						target			: $this,			// This element.
+						wrapper			: $this.wrapInner('<div class="ui-'+plugin_name+'" style="overflow-y:scroll;position:relative;height:100%;" />').find('.ui-'+plugin_name+''),
 						settings		: settings,			// The settings for this plugin.
 						headers			: [],
 						containerTop	: 0,
 						currentHeader	: 0,
 						fakeHeader		: null,
-						borderLeft		: parseInt( $this.css("borderLeftWidth"), 10 ),
-						borderTop		: parseInt( $this.css("borderTopWidth"), 10 ),
 						scrolllist		: []
 					}
 					
@@ -267,23 +238,22 @@
 					
 					// Grab some variables to set up the list.
 				    data.headers		= $this.find(data.settings.headerSelector);
-				    data.containerTop	= $this.offset().top + parseInt($this.css('marginTop'),10) + data.borderTop;
 				    data.fakeHeader		= data.headers.eq(0).clone().removeAttr('id').addClass('-'+plugin_name+'-fakeheader');
 				    
 				    // bind a scroll event and change the text of the fake heading
-				    $this.bind('scroll.'+plugin_name,_private.events.scroll);
+				    data.wrapper.bind('scroll.'+plugin_name,$.proxy(_private.events.scroll,$this));
 				    $(window).bind('resize.'+plugin_name,$.proxy(_private.events.resize,$this));
-				    				    			
+				    
 					// Set the fake headers
-				    data.fakeHeader.css($.extend(_private.getStyles.apply(data.headers),{
+				    data.fakeHeader.css({
 				    	position	: 'absolute',
-				    	top			: data.borderTop,
-				    	left		: data.borderLeft,
+				    	top			: 0,
+				    	width		: data.headers.width(),
 				    	zIndex		: data.settings.zIndex
-				    }));
+				    });
 				   
 				    // Add the fake header before all other children, and set the HTML.
-				    $this.data(plugin_name,data).wrap('<div class="ui-'+plugin_name+'" style="overflow: hidden; position: relative;" />').before( data.fakeHeader );
+				    $this.data(plugin_name,data).prepend( data.fakeHeader );
 				}
 			});
 		},
@@ -328,9 +298,8 @@
 					if( newHeader !== undefined && !isNaN( newHeader ) && newHeader >= 0 && newHeader < data.headers.length ){
 						
 						// Get the new header.
-						$header = data.headers.eq(newHeader);
-						
-						var scrollTo = $header.position().top + $this.scrollTop() + data.borderTop;
+						var $header = data.headers.eq(newHeader),
+							scrollTo = $header.position().top + data.wrapper.scrollTop() + parseInt($header.css('borderTopWidth'),10) + parseInt($header.css('borderBottomWidth'),10);
 						
 						// If we're not animating, we need to set the element directly.
 						if( speed == undefined ){
@@ -349,7 +318,7 @@
 							
 						} else {
 							// If we are animating, the scroll event will fire... maybe.
-							$this.animate({scrollTop:scrollTo},speed,easing,completion);
+							data.wrapper.animate({scrollTop:scrollTo},speed,easing,completion);
 						}
 					}
 				}

@@ -1,15 +1,38 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>jQuery List Demo</title>
+		<title>jQuery List 'scrollTo' Demo</title>
 		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 		<script type="text/javascript" src="../jquery.list.js"></script>
 		
 		<script type="text/javascript">
 			
 			$(function(){
+				
+				// Add a live click handler for the button.
+				$('#container dt button').live('click',function(){
+					switch( $(this).attr('name') ){
+						
+						case 'top' :
+							$('#container dl').list('scrollTo',0,'slow','swing');
+						break;
+						
+						case 'next':
+							var index = $('#container dl').list('header')+1;
+							$('#container dl').list('scrollTo',index,'fast','swing');
+						break;
+					}
+				});
+				
 				// Initialise the list.
-				$('#container dl').list();
+				$('#container dl').list().bind('headingChange',function(){
+				
+					// Add the 'next' button to the fake header element.
+					$('#container .-list-fakeheader').append('<button name="next">Next</button>');
+				});
+				
+				$('#container dt:first').append('<button name="next">Next</button>');
+				$('#container dt:last').append('<button name="top">Top</button>');
 			});
 			
 		</script>
@@ -24,7 +47,7 @@
 				font-size: 9pt;
 				background: #f8f8f8;
 				border: 1px solid #e4e4e4;
-			}
+			}	
 			dl.list{
 				border: 1px solid #2683BD;
 				height: 350px;
@@ -32,6 +55,7 @@
 				padding: 0;
 				overflow: hidden;
 				position: relative;
+				font-family: sans-serif;
 				font-size: 1em;
 			}
 			dl.list dt{
@@ -50,12 +74,51 @@
 				font-size: 0.8em;
 				color: #2A5673;
 			}
+			dl.list dt button{
+				border: 1px solid #2683BD;
+				background: #2683BD url(../docs/resources/images/overlay-sprite.png) repeat-x 0 -45px;
+				font-weight: bold;
+				text-shadow: -1px -1px 0px rgba( 0, 0, 0, 0.2 ), 1px 1px 0px rgba( 255, 255, 255, 0.3 );
+				color: white;
+				padding: 3px 8px;
+				margin: -3px 0px;
+				float: right;
+				border-radius: 5px;
+				font-size: 0.85em;
+				cursor: pointer;
+			}
+			dl.list dt button:hover{
+				background-color: #1D6FA2;
+			}
 		</style>
 	</head>
 	<body>
-		<h1>Basic List</h1>
-		<p>A basic list with fixed headings.</p>
-		<pre><code>$('#container dl').list();</code></pre>
+		<h1>ScrollTo List</h1>
+		<p>This list has dynamically added buttons which scroll to the next heading when clicked.</p>
+		<pre><code>// Add a live click handler for the button.
+$('#container dt button').live('click',function(){
+    switch( $(this).attr('name') ){
+
+        case 'top' :
+            $('#container dl').list('scrollTo',0,'slow','swing');
+        break;
+
+        case 'next':
+            var index = $('#container dl').list('header')+1;
+            $('#container dl').list('scrollTo',index,'fast','swing');
+        break;
+    }
+});
+
+// Initialise the list.
+$('#container dl').list().bind('headingChange',function(){
+
+	// Add the 'next' button to the fake header element.
+	$('#container .-list-fakeheader').append('&lt;button name="next"&gt;Next&lt;/button&gt;');
+});
+
+$('#container dt:first').append('&lt;button name="next"&gt;Next&lt;/button&gt;');
+$('#container dt:last').append('&lt;button name="top"&gt;Top&lt;/button&gt;');</code></pre>
 		<div id="container">
 			<dl class="list">
 				<dt>List Title One</dt>
