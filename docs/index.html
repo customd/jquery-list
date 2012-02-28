@@ -49,6 +49,7 @@
 	<ul>
 		<li><a href="../examples/demo-basic.html">Basic Example</a></li>
 		<li><a href="../examples/demo-scrollto.html">ScrollTo Method Example</a></li>
+		<li><a href="../examples/demo-australia.html">Australian Cities - Custom List Structure</a></li>
 	</ul>
 	
 	<h2><a name="config">Configuration Properties</a></h2>
@@ -59,18 +60,16 @@
 			</thead>
 			<tbody>
 				<tr><td><a href="#selectors">headerSelector</a></td><td>dt</td><td>The jQuery selector used to identify header elements.</td></tr>
-				<tr><td><a href="#selectors">bodySelector</a></td><td>dd</td><td>The jQuery selector used to identify body elements.</td></tr>
 				<tr><td>zIndex</td><td>1</td><td>The zIndex for the floating header elements. Should be greater than all body parts.</td></tr>
 			</tbody>
 		</table>
 	</div>
 	
-	<h3><a name="selectors">Header/Body Selectors.</a></h3>
-	<p>You can use any jQuery selector in order to define which elements are considered list body items, and which are considered list headers.</p>
+	<h3><a name="selectors">Header Selector.</a></h3>
+	<p>You can use any jQuery selector in order to define which elements are considered list headers. All other elements in the list are considered body elements.</p>
 	
 	<code class="prettyprint lang-javascript">$('dl').list({
-	headerSelector : 'li.header',
-	bodySelector   : 'li'
+	headerSelector : 'li.header'
 });</code>
 	<code class="prettyprint lang-html">&lt;ul&gt;
     &lt;li class="header"&gt;Title&lt;/li&gt;

@@ -33,7 +33,6 @@
 	// as the parameter to the init method.
 	var defaults = {
 		headerSelector	: 'dt',
-		bodySelector	: 'dd',
 		zIndex			: 1
 	};
 	

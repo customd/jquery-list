@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>jQuery List Demo - Australian States, Cities</title>
+		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+		<script type="text/javascript" src="../jquery.list.js"></script>
+		
+		<script type="text/javascript">
+			
+			$(function(){
+				// Initialise the list.
+				$('ul.cities').list({
+					headerSelector : 'li.heading'
+				});
+			});
+			
+		</script>
+		
+		<style>
+			body{
+				font-family: sans-serif;
+			}
+			pre{
+				padding: 10px;
+				font-family: monospace;
+				font-size: 9pt;
+				background: #f8f8f8;
+				border: 1px solid #e4e4e4;
+			}	
+			ul.cities{
+				border: 1px solid #2683BD;
+				height: 350px;
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+				position: relative;
+				font-family: sans-serif;
+				font-size: 1em;
+			}
+			ul.cities li.heading{
+				margin: 0;
+				background: #2683BD url(../docs/resources/images/overlay-sprite.png) repeat-x 0 -50px;
+				font-weight: bold;
+				text-shadow: -1px -1px 0px rgba( 0, 0, 0, 0.2 ), 1px 1px 0px rgba( 255, 255, 255, 0.3 );
+				color: white;
+				padding: 8px 5px;
+				border-bottom: 1px solid #1D6FA2;
+			}
+			ul.cities li.heading h3{
+				margin: 0;
+			}
+			ul.cities li{
+				padding: 5px;
+				margin: 0;
+				border-bottom: 1px solid #F2F6FB;
+				font-size: 0.8em;
+				color: #2A5673;
+			}
+			ul.cities li a{
+				display: inline-block;
+				color: #2A5673;
+				text-decoration: none;	
+			}
+			ul.cities li a::before{
+				border: 1px solid #f8f8f8;
+				background: #f8f8f8 url(../docs/resources/images/overlay-sprite.png) repeat-x 0 -50px;
+				border-radius: 4px;
+				padding: 2px 6px;
+				content: '>';
+				text-decoration: none;
+				margin-top: -3px;
+				margin-right: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>jQuery List Demo - Australian States, Cities</h1>
+		<p>This list is using custom header and element selectors.</p>
+		<pre><code>$('ul.cities').list({
+    headerSelector : 'li.heading'
+});</code></pre>
+		
+		<ul class="cities">
+			<li class="heading"><h3>New South Whales</h3></li>
+			<li><a href="http://en.wikipedia.org/wiki/Sydney" title="Sydney">Sydney</a> (Capital)</li>
+			<li><a href="http://en.wikipedia.org/wiki/Albury,_New_South_Wales" title="Albury, New South Wales" class="mw-redirect">Albury</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Armidale,_New_South_Wales" title="Armidale, New South Wales">Armidale</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Bathurst,_New_South_Wales" title="Bathurst, New South Wales">Bathurst</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/City_of_Blue_Mountains" title="City of Blue Mountains">Blue Mountains</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Broken_Hill" title="Broken Hill" class="mw-redirect">Broken Hill</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Campbelltown,_New_South_Wales" title="Campbelltown, New South Wales">Campbelltown</a> *</li>
+			<li><a href="http://en.wikipedia.org/wiki/Cessnock,_New_South_Wales" title="Cessnock, New South Wales">Cessnock</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Dubbo" title="Dubbo">Dubbo</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Goulburn,_New_South_Wales" title="Goulburn, New South Wales">Goulburn</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Grafton,_New_South_Wales" title="Grafton, New South Wales">Grafton</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Lithgow,_New_South_Wales" title="Lithgow, New South Wales">Lithgow</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Liverpool,_New_South_Wales" title="Liverpool, New South Wales">Liverpool</a> *</li>
+			<li><a href="http://en.wikipedia.org/wiki/Newcastle,_New_South_Wales" title="Newcastle, New South Wales">Newcastle</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Orange,_New_South_Wales" title="Orange, New South Wales">Orange</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Parramatta,_New_South_Wales" title="Parramatta, New South Wales">Parramatta</a> *</li>
+			<li><a href="http://en.wikipedia.org/wiki/Penrith,_New_South_Wales" title="Penrith, New South Wales">Penrith</a> *</li>
+			<li><a href="http://en.wikipedia.org/wiki/Queanbeyan" title="Queanbeyan">Queanbeyan</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Tamworth,_New_South_Wales" title="Tamworth, New South Wales">Tamworth</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Wagga_Wagga" title="Wagga Wagga">Wagga Wagga</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Wollongong" title="Wollongong">Wollongong</a></li>
+			
+			<li class="heading"><h3>Northern Territory</h3></li>
+			<li><a href="http://en.wikipedia.org/wiki/Darwin,_Northern_Territory" title="Darwin, Northern Territory">Darwin</a> (Capital)</li>
+			<li><a href="http://en.wikipedia.org/wiki/Palmerston,_Northern_Territory" title="Palmerston, Northern Territory">Palmerston</a></li>
+			
+			<li class="heading"><h3>Queensland</h3></li>
+			<li><a href="http://en.wikipedia.org/wiki/Brisbane" title="Brisbane">Brisbane</a> (Capital)</li>
+			<li><a href="http://en.wikipedia.org/wiki/Bundaberg" title="Bundaberg">Bundaberg</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Cairns" title="Cairns">Cairns</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Caloundra" title="Caloundra">Caloundra</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Gladstone,_Queensland" title="Gladstone, Queensland">Gladstone</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Gold_Coast,_Queensland" title="Gold Coast, Queensland">Gold Coast</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Gympie" title="Gympie">Gympie</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Hervey_Bay" title="Hervey Bay">Hervey Bay</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Ipswich,_Queensland" title="Ipswich, Queensland">Ipswich</a> *</li>
+			<li><a href="http://en.wikipedia.org/wiki/Logan_City" title="Logan City">Logan City</a> *</li>
+			<li><a href="http://en.wikipedia.org/wiki/Mackay,_Queensland" title="Mackay, Queensland">Mackay</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Maryborough,_Queensland" title="Maryborough, Queensland">Maryborough</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Mount_Isa" title="Mount Isa">Mount Isa</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Rockhampton" title="Rockhampton">Rockhampton</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Sunshine_Coast,_Queensland" title="Sunshine Coast, Queensland">Sunshine Coast</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Surfers_Paradise" title="Surfers Paradise" class="mw-redirect">Surfers Paradise</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Toowoomba" title="Toowoomba">Toowoomba</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Townsville" title="Townsville">Townsville</a></li>
+			
+			<li class="heading"><h3>South Australia</h3></li>
+			<li><a href="http://en.wikipedia.org/wiki/Adelaide" title="Adelaide">Adelaide</a> (Capital)</li>
+			<li><a href="http://en.wikipedia.org/wiki/Mount_Barker,_South_Australia" title="Mount Barker, South Australia">Mount Barker</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Mount_Gambier,_South_Australia" title="Mount Gambier, South Australia">Mount Gambier</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Murray_Bridge,_South_Australia" title="Murray Bridge, South Australia">Murray Bridge</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Port_Adelaide,_South_Australia" title="Port Adelaide, South Australia" class="mw-redirect">Port Adelaide</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Port_Augusta,_South_Australia" title="Port Augusta, South Australia">Port Augusta</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Port_Pirie" title="Port Pirie">Port Pirie</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Port_Lincoln" title="Port Lincoln">Port Lincoln</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Victor_Harbor,_South_Australia" title="Victor Harbor, South Australia">Victor Harbor</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Whyalla,_South_Australia" title="Whyalla, South Australia" class="mw-redirect">Whyalla</a></li>
+			
+			<li class="heading"><h3>Tasmania</h3></li>
+			<li><a href="http://en.wikipedia.org/wiki/Hobart" title="Hobart">Hobart</a> (Capital), which consists of the <a href="http://en.wikipedia.org/wiki/Conurbation" title="Conurbation">conurbation</a> of the <a href="http://en.wikipedia.org/wiki/City_of_Clarence" title="City of Clarence">City of Clarence</a>, <a href="http://en.wikipedia.org/wiki/City_of_Hobart" title="City of Hobart">City of Hobart</a>, and the <a href="http://en.wikipedia.org/wiki/City_of_Glenorchy" title="City of Glenorchy">City of Glenorchy</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Burnie,_Tasmania" title="Burnie, Tasmania">Burnie</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Devonport,_Tasmania" title="Devonport, Tasmania">Devonport</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Launceston,_Tasmania" title="Launceston, Tasmania">Launceston</a></li>
+			
+			<li class="heading"><h3>Victoria</h3></li>
+			<li><a href="http://en.wikipedia.org/wiki/Melbourne" title="Melbourne">Melbourne</a> (Capital)</li>
+			<li><a href="http://en.wikipedia.org/wiki/Ararat,_Victoria" title="Ararat, Victoria">Ararat</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Bairnsdale,_Victoria" title="Bairnsdale, Victoria" class="mw-redirect">Bairnsdale</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Benalla,_Victoria" title="Benalla, Victoria" class="mw-redirect">Benalla</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Ballarat" title="Ballarat">Ballarat</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Bendigo" title="Bendigo">Bendigo</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Dandenong,_Victoria" title="Dandenong, Victoria">Dandenong</a> *</li>
+			<li><a href="http://en.wikipedia.org/wiki/Frankston,_Victoria" title="Frankston, Victoria">Frankston</a> *</li>
+			<li><a href="http://en.wikipedia.org/wiki/Geelong" title="Geelong">Geelong</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Hamilton,_Victoria" title="Hamilton, Victoria">Hamilton</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Horsham,_Victoria" title="Horsham, Victoria">Horsham</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Melton,_Victoria" title="Melton, Victoria">Melton</a> *</li>
+			<li><a href="http://en.wikipedia.org/wiki/Moe,_Victoria" title="Moe, Victoria">Moe</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Morwell,_Victoria" title="Morwell, Victoria">Morwell</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Mildura,_Victoria" title="Mildura, Victoria" class="mw-redirect">Mildura</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Sale,_Victoria" title="Sale, Victoria">Sale</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Shepparton,_Victoria" title="Shepparton, Victoria" class="mw-redirect">Shepparton</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Swan_Hill,_Victoria" title="Swan Hill, Victoria">Swan Hill</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Traralgon,_Victoria" title="Traralgon, Victoria" class="mw-redirect">Traralgon</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Wangaratta,_Victoria" title="Wangaratta, Victoria" class="mw-redirect">Wangaratta</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Warrnambool,_Victoria" title="Warrnambool, Victoria" class="mw-redirect">Warrnambool</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Wodonga,_Victoria" title="Wodonga, Victoria">Wodonga</a></li>
+			
+			<li class="heading"><h3>Western Australia</h3></li>
+			<li><a href="http://en.wikipedia.org/wiki/Perth,_Western_Australia" title="Perth, Western Australia">Perth</a> (Capital) *</li>
+			<li><a href="http://en.wikipedia.org/wiki/Albany,_Western_Australia" title="Albany, Western Australia">Albany</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Bunbury,_Western_Australia" title="Bunbury, Western Australia">Bunbury</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Busselton,_Western_Australia" title="Busselton, Western Australia">Busselton</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Fremantle" title="Fremantle">Fremantle</a> *</li>
+			<li><a href="http://en.wikipedia.org/wiki/Geraldton" title="Geraldton">Geraldton</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Joondalup" title="Joondalup">Joondalup</a> *</li>
+			<li><a href="http://en.wikipedia.org/wiki/Kalgoorlie" title="Kalgoorlie">Kalgoorlie</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Mandurah" title="Mandurah">Mandurah</a></li>
+			<li><a href="http://en.wikipedia.org/wiki/Rockingham,_Western_Australia" title="Rockingham, Western Australia">Rockingham</a> *</li>
+		</ul>
+	</body>
+</html>
