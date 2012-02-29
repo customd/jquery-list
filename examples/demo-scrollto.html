@@ -3,11 +3,14 @@
 	<head>
 		<title>jQuery List 'scrollTo' Demo</title>
 		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+		<script type="text/javascript" src="../docs/resources/javascripts/prettify.js"></script>
 		<script type="text/javascript" src="../jquery.list.js"></script>
 		
 		<script type="text/javascript">
 			
 			$(function(){
+				// Pretty print code blocks.
+				prettyPrint();
 				
 				// Add a live click handler for the button.
 				$('#container dt button').live('click',function(){
@@ -37,11 +40,13 @@
 			
 		</script>
 		
+		<link rel="stylesheet" href="../docs/resources/stylesheets/prettify.css" type="text/css" />
+		
 		<style>
 			body{
 				font-family: sans-serif;
 			}
-			pre{
+			pre.prettyprint{
 				padding: 10px;
 				font-family: monospace;
 				font-size: 9pt;
@@ -75,12 +80,12 @@
 				color: #2A5673;
 			}
 			dl.list dt button{
-				border: 1px solid #2683BD;
-				background: #2683BD url(../docs/resources/images/overlay-sprite.png) repeat-x 0 -45px;
+				border: 1px solid #64A1C8;
+				background: #2683BD url(../docs/resources/images/overlay-sprite.png) repeat-x 0 -62px;
 				font-weight: bold;
 				text-shadow: -1px -1px 0px rgba( 0, 0, 0, 0.2 ), 1px 1px 0px rgba( 255, 255, 255, 0.3 );
-				color: white;
-				padding: 3px 8px;
+				color: rgba( 255, 255, 255, 0.95 );
+				padding: 4px 8px;
 				margin: -3px 0px;
 				float: right;
 				border-radius: 5px;
@@ -88,6 +93,7 @@
 				cursor: pointer;
 			}
 			dl.list dt button:hover{
+				color: white;
 				background-color: #1D6FA2;
 			}
 		</style>
@@ -95,7 +101,7 @@
 	<body>
 		<h1>ScrollTo List</h1>
 		<p>This list has dynamically added buttons which scroll to the next heading when clicked.</p>
-		<pre><code>// Add a live click handler for the button.
+		<pre class="prettyprint lang-javascript"><code>// Add a live click handler for the button.
 $('#container dt button').live('click',function(){
     switch( $(this).attr('name') ){
 

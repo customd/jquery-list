@@ -3,11 +3,15 @@
 	<head>
 		<title>jQuery List Demo - Australian States, Cities</title>
 		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+		<script type="text/javascript" src="../docs/resources/javascripts/prettify.js"></script>
 		<script type="text/javascript" src="../jquery.list.js"></script>
 		
 		<script type="text/javascript">
 			
 			$(function(){
+				// Pretty print code blocks.
+				prettyPrint();
+				
 				// Initialise the list.
 				$('ul.cities').list({
 					headerSelector : 'li.heading'
@@ -16,11 +20,13 @@
 			
 		</script>
 		
+		<link rel="stylesheet" href="../docs/resources/stylesheets/prettify.css" type="text/css" />
+		
 		<style>
 			body{
 				font-family: sans-serif;
 			}
-			pre{
+			pre.prettyprint{
 				padding: 10px;
 				font-family: monospace;
 				font-size: 9pt;
@@ -61,22 +67,20 @@
 				color: #2A5673;
 				text-decoration: none;	
 			}
+			ul.cities li a:hover{
+				text-decoration: underline;
+			}
 			ul.cities li a::before{
-				border: 1px solid #f8f8f8;
-				background: #f8f8f8 url(../docs/resources/images/overlay-sprite.png) repeat-x 0 -50px;
-				border-radius: 4px;
-				padding: 2px 6px;
-				content: '>';
-				text-decoration: none;
-				margin-top: -3px;
-				margin-right: 5px;
+				position: relative;
+				top: 3px;
+				content: url(../docs/resources/images/arrow.png);
 			}
 		</style>
 	</head>
 	<body>
 		<h1>jQuery List Demo - Australian States, Cities</h1>
 		<p>This list is using custom header and element selectors.</p>
-		<pre><code>$('ul.cities').list({
+		<pre class="prettyprint lang-javascript"><code>$('ul.cities').list({
     headerSelector : 'li.heading'
 });</code></pre>
 		

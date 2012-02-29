@@ -3,22 +3,28 @@
 	<head>
 		<title>jQuery List Demo</title>
 		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+		<script type="text/javascript" src="../docs/resources/javascripts/prettify.js"></script>
 		<script type="text/javascript" src="../jquery.list.js"></script>
 		
 		<script type="text/javascript">
 			
 			$(function(){
+				// Pretty print code blocks.
+				prettyPrint();
+				
 				// Initialise the list.
 				$('#container dl').list();
 			});
 			
 		</script>
 		
+		<link rel="stylesheet" href="../docs/resources/stylesheets/prettify.css" type="text/css" />
+		
 		<style>
 			body{
 				font-family: sans-serif;
 			}
-			pre{
+			pre.prettyprint{
 				padding: 10px;
 				font-family: monospace;
 				font-size: 9pt;
@@ -55,7 +61,7 @@
 	<body>
 		<h1>Basic List</h1>
 		<p>A basic list with fixed headings.</p>
-		<pre><code>$('#container dl').list();</code></pre>
+		<pre class="prettyprint lang-javascript"><code>$('#container dl').list();</code></pre>
 		<div id="container">
 			<dl class="list">
 				<dt>List Title One</dt>
