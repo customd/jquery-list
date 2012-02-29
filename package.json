@@ -1,0 +1,42 @@
+{
+	"name"			: "df-list",
+	"version"		: "1.2.0",
+	"title"			: "Fixed List Headers",
+	"author"		: {
+		"name"	: "Team DF",
+		"email"	: "plugins@teamdf.com",
+		"url"	: "http://teamdf.com/"
+	},
+	"maintainers"	: [
+		{
+			"name"	: "Sam Sehnert",
+			"email"	: "sam@teamdf.com"
+		},{
+			"name"	: "Phil Taylor",
+			"email"	: "phil@teamdf.com"
+		}
+	],
+	"description"	: "This plugin allows the user to create a list with floating headings while scrolling, a-la iOS & iCal day view. The plugin allows arbitrary markup of the header and list items, and will work nicely with nested elements.",
+	"keywords"		: [
+		"list",
+		"floating",
+		"header",
+		"fixed",
+		"scroll"
+	],
+	"homepage"		: "https://github.com/teamdf/jquery-list/",
+	"docs"			: "https://github.com/teamdf/jquery-list/tree/master/docs",
+	"demo"			: "https://github.com/teamdf/jquery-list/",
+	"files"			: [
+		"jquery.list.js"
+	],
+	"dependancies"	: {
+		"jquery" : ">1.6.0"
+	},
+	"licenses"		: [
+		{
+		    "type": "GPLv3",
+		    "url": "http://www.gnu.org/licenses/gpl-3.0.html"
+		}
+	]
+}
