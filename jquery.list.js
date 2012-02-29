@@ -13,7 +13,7 @@
 	// The name of your plugin. This is used to namespace your
 	// plugin methods, object data, and registerd events.
 	var plugin_name = 'list';
-	var plugin_version = '1.2.0';
+	var plugin_version = '1.2.1';
 	var plugin_logging = true;
 	
 	// Set up the plugin defaults.
@@ -91,6 +91,7 @@
 				
 				if( data ){
 					data.fakeHeader.width(data.headers.width()-_private.scrollbarSize());
+					data.wrapper.css('maxHeight',$this.css('maxHeight'));
 				}
 			},
 			
@@ -212,25 +213,37 @@
 					// Create the data object.
 					data = {
 						target			: $this,			// This element.
-						wrapper			: $this.wrapInner('<div class="ui-'+plugin_name+'" style="overflow-y:scroll;position:relative;height:100%;" />').find('.ui-'+plugin_name+''),
+						wrapper			: $this.wrapInner('<div class="ui-'+plugin_name+'" />').find('.ui-'+plugin_name+''),
 						settings		: settings,			// The settings for this plugin.
 						headers			: [],
 						containerTop	: 0,
 						currentHeader	: 0,
 						fakeHeader		: null,
-						scrolllist		: []
+						scrolllist		: [],
+						original		: {
+							position	: '',
+							overflowX	: '',
+							overflowY	: ''
+						}
 					}
 					
 					// Add the container class, and the base HTML structure
-					$this.addClass('-'+plugin_name+'-container');
+					$this.addClass('-'+plugin_name+'-container').css({
+						position	: $this.css('position') == 'absolute' ? 'absolute' : 'relative',
+						overflowY	: 'hidden'
+					});
 					
 					// Grab some variables to set up the list.
 				    data.headers		= $this.find(data.settings.headerSelector);
 				    data.fakeHeader		= data.headers.eq(0).clone().removeAttr('id').addClass('-'+plugin_name+'-fakeheader');
 				    
 				    // bind a scroll event and change the text of the fake heading
-				    data.wrapper.bind('scroll.'+plugin_name,$.proxy(_private.events.scroll,$this));
-				    $(window).bind('resize.'+plugin_name,$.proxy(_private.events.resize,$this));
+				    data.wrapper.bind('scroll.'+plugin_name,$.proxy(_private.events.scroll,$this)).css({
+				    	height		: '100%',
+				    	maxHeight	: $this.css('maxHeight'),
+				    	overflowY	: 'scroll',
+				    	position	: 'relative'
+				    });
 				    
 					// Set the fake headers
 				    data.fakeHeader.css({
@@ -239,6 +252,9 @@
 				    	width		: data.headers.width(),
 				    	zIndex		: data.settings.zIndex
 				    });
+					
+					// Bind the resize event to the window.
+					$(window).bind('resize.'+plugin_name,$.proxy(_private.events.resize,$this));
 				   
 				    // Add the fake header before all other children, and set the HTML.
 				    $this.data(plugin_name,data).prepend( data.fakeHeader );
@@ -293,7 +309,7 @@
 						if( speed == undefined ){
 							
 							$this.scrollTop( scrollTo );
-													
+							
 							// Set as the current header.
 							data.currentHeader = newHeader;
 							data.fakeHeader.html($header.html());
@@ -391,13 +407,17 @@
 				
 				// Only bother if we've set this up before.
 				if( data ){
+					
+					// Remove wrapper and fakeheader.
+					data.wrapper.children().unwrap();
+					data.fakeHeader.remove();
+					
 					// Now, remove all data, etc, then
 					// reattach this element to its parent, then delete list div.
-					$this.removeData(plugin_name)
+					$this.css(data.original)
+						 .removeData(plugin_name)
 						 .removeClass('-'+plugin_name+'-container')
-				    	 .unbind('.'+plugin_name)
-						 .parent().after($this);
-					$this.siblings('.ui-'+plugin_name).remove();
+				    	 .unbind('.'+plugin_name);
 				}
 			});
 		}
