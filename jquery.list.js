@@ -326,8 +326,8 @@
 							$this.data(plugin_name,data);
 							
 						} else {
-							// If we are animating, the scroll event will fire... maybe.
-							data.wrapper.animate({scrollTop:scrollTo},speed,easing,completion);
+							// If we are animating, the scroll event will fire.
+							data.wrapper.stop().animate({scrollTop:scrollTo},speed,easing,completion);
 						}
 					}
 				}
