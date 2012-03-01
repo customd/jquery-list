@@ -163,10 +163,14 @@
 						trigger = true;
 					}
 					
-					if( trigger ){
+					var max = ( data.wrapper.scrollTop() >= data.wrapper.prop('scrollHeight') - data.wrapper.height() );
+					
+					if( trigger || max || data.max && !max ){
 						// Trigger the headingChange event.
-						$this.trigger('headingChange',[data.currentHeader,data.headers.eq(data.currentHeader)]);
+						$this.trigger('headingChange',[data.currentHeader,data.headers.eq(data.currentHeader),max]);
 					}
+					
+					data.max = max;
 					
 					// Save the new data.
 					$this.data(plugin_name,data);
@@ -224,7 +228,8 @@
 							position	: '',
 							overflowX	: '',
 							overflowY	: ''
-						}
+						},
+						max				: false
 					}
 					
 					// Add the container class, and the base HTML structure

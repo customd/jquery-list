@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>jQuery List - ScrollTo Demo</title>
+		<title>jQuery List - headerChange Demo</title>
 		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 		<script type="text/javascript" src="http://www.teamdf.com/jquery-plugins/resources/javascripts/prettify.js"></script>
 		<script type="text/javascript" src="../jquery.list.js"></script>
@@ -24,23 +24,47 @@
 			});
 			
 			function prepareList() {
+				
+				var $buttons = $('#buttons'),
+					$countries = $('#countries');
 								
 				// Generate the list of buttons for the scrollto links.
-				$('#countries dt').each(function(i){
+				$('dt',$countries).each(function(i){
 					
 					// Create the new button element for this header.
-					$('#buttons').append('<button data-header="'+i+'">'+$(this).text()+'</button>');
+					$buttons.append('<button data-header="'+i+'">'+$(this).text()+'</button>');
+				});
+				
+				// Add the < > buttons and then add inactive class to the first two buttons (< and the first header).
+				$buttons.prepend('<button data-header="0">&lt;</button>')
+						.append('<button data-header="1">&gt</button>')
+						.find('button:lt(2)')
+							.addClass('inactive');
+												
+				// Initialise the list.
+				$('#countries').list().bind('headingChange',function(ele,index,$header,max){
+					
+					// Remove the inactive class, and add to the newly selected header.	
+					$('button',$buttons)
+						.removeClass('inactive')
+						.eq(index+1)
+							.addClass('inactive');
+					
+					// Set the new next and previous index to the < and > buttons.
+					$('button:first',$buttons).attr('data-header',index-1);
+					$('button:last',$buttons).attr('data-header',index+1);
+					
+					// Grey out the first and last elments if we can't proceed in that direction any further.
+					if( index == 0 )	$buttons.find('button:first').addClass('inactive');					
+					if( max == true )	$buttons.find('button:gt('+(index+1)+')').addClass('inactive');
 				});
 				
 				// Add an event handler 
-				$('#buttons button').live('click', function(){
-				
-					// Scroll to the selected element.
+				$('button',$buttons).live('click', function(){
+					
+					// Scroll to the 
 					$('#countries').list( 'scrollTo', $(this).attr('data-header'), 'fast', 'swing' );
 				});
-				
-				// Add the list plugin.
-				$('#countries').list();
 			}
 			
 		</script>
@@ -116,9 +140,10 @@
 		</style>
 	</head>
 	<body>
-		<h1>jQuery List - ScrollTo Demo</h1>
+		<h1>jQuery List - headerChange Demo</h1>
 		<a href="../docs/index.html#demos">Back to Docs</a>
-		<p>This list has dynamically added buttons which scroll to the next heading when clicked.</p>
+		<p>Similar to the <a href="demo-scrollto.html">ScrollTo</a> Demo, but uses the headerChange event to show which headings you can scroll to.</p>
+		
 		<pre class="prettyprint lang-javascript"><code></code></pre>
 	
 		<div id="buttons"></div>
