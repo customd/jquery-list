@@ -46,39 +46,6 @@
 				}
 			}
 		},
-		
-		/**
-		 * Get the scrollbar width so we know how much space to allocate.
-		 *
-		 * @return int : Returns the width of the scrollbars in pixels.
-		 */
-		scrollbarSize : function() {
-			
-			// Use the cached version if exists.
-			if (_private._scrollbarSize===false) {
-			
-				var $doc = $(document.body),
-				
-				// Set the overflow to hidden, scroll and measure difference.
-				w =$doc.css({overflow:'hidden'}).width();
-				w-=$doc.css({overflow:'scroll'}).width();
-				
-				// Add support for IE in Standards mode.
-				if(!w) w=$doc.width()-$doc[0].clientWidth;
-				
-				// Restore the overflow setting.
-				$doc.css({overflow:''});
-				
-				// Cache the scrollbar width.
-				_private._scrollbarSize = w;
-			}
-			
-			// Return the width.
-			return _private._scrollbarSize;
-		},
-		
-		// Cache the scrollbar size here.
-		_scrollbarSize : false,
 				
 		// Contains events for this plugin.
 		events : {
@@ -90,7 +57,7 @@
 				var $this = $(this),data = $this.data(plugin_name);
 				
 				if( data ){
-					data.fakeHeader.width(data.headers.width()-_private.scrollbarSize());
+					data.fakeHeader.width(data.headers.width());
 					data.wrapper.css('maxHeight',$this.css('maxHeight'));
 				}
 			},
@@ -120,6 +87,9 @@
 					 		height	= currentHeader.outerHeight();
 					 	
 					 	if( top > data.containerTop ){
+					 		
+					 		currentHeader.css('visibility','visible');
+					 		prevHeader.css('visibility','hidden');
 					 		
 					 		data.fakeHeader.css('top',(top-height)-data.containerTop);
 					 		data.fakeHeader.html(prevHeader.html());
