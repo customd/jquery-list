@@ -281,9 +281,9 @@
 							scrollTo = $header.position().top + data.wrapper.scrollTop() + parseInt($header.css('borderTopWidth'),10) + parseInt($header.css('borderBottomWidth'),10);
 						
 						// If we're not animating, we need to set the element directly.
-						if( speed == undefined ){
+						if( !speed ){
 							
-							$this.scrollTop( scrollTo );
+							data.wrapper.stop().scrollTop( scrollTo );
 							
 							// Set as the current header.
 							data.currentHeader = newHeader;
