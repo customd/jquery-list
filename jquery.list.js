@@ -88,9 +88,6 @@
 					 	
 					 	if( top > data.containerTop ){
 					 		
-					 		currentHeader.css('visibility','visible');
-					 		prevHeader.css('visibility','hidden');
-					 		
 					 		data.fakeHeader.css('top',(top-height)-data.containerTop);
 					 		data.fakeHeader.html(prevHeader.html());
 					 		data.currentHeader = data.currentHeader-1;
