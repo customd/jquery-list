@@ -72,7 +72,7 @@
 					
 					var newHeader		= null,
 						currentHeader	= data.headers.eq( data.currentHeader ),
-						nextHeader		= data.currentHeader >= data.headers.length ? null : data.headers.eq( data.currentHeader+1 ),
+						nextHeader		= data.currentHeader >= data.headers.length-1 ? null : data.headers.eq( data.currentHeader+1 ),
 						prevHeader		= data.currentHeader <= 0 ? null : data.headers.eq( data.currentHeader-1 ),
 						trigger			= false;
 					
