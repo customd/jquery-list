@@ -27,4 +27,4 @@ which will fire whenever the currently viewed heading changes.
 ### Full plugin documentation
 
 The Documentation for this plugin lives under the docs/ directory. Open it directly 
-in your web browser. All resources are included (except jQuery).
+in your web browser, or see the [online documentation](http://teamdf.com/jquery-plugins/list/).
