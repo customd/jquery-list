@@ -32,10 +32,15 @@ in your web browser, or see the [online documentation](http://teamdf.com/jquery-
 ### Demos
 
 The Demos for this plugin live under the examples/ directory. Open them directly in your web browser, or view the following online examples:
+
 [Basic Demo](http://www.teamdf.com/jquery-plugins/list/examples/demo-basic.html)
+
 [Australian States & Cities Demo](http://www.teamdf.com/jquery-plugins/list/examples/demo-australia.html)
+
 [ScrollTo Demo](http://www.teamdf.com/jquery-plugins/list/examples/demo-scrollto.html)
+
 [headerChange Demo](http://www.teamdf.com/jquery-plugins/list/examples/demo-headerchange.html)
 
 The following are Demos not included in the examples/ directory and can only be viewed online:
+
 [Showcasing jQuery List with a fake iPhone](http://www.teamdf.com/web/showcasing-jquery-list-with-a-fake-iphone/147/)
