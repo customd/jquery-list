@@ -46,6 +46,23 @@
 				}
 			}
 		},
+		
+		// Update the whole header object on the fly so all properties will be reserved. So setting
+		// different styles for specific titles, such as different font color for today or weekends, 
+		// holidays, etc. becomes posible.
+		updateHeader: function(target, newHeader) {
+            var data = target.data(plugin_name);
+            if (data) {
+                data.fakeHeader = newHeader.clone().removeAttr('id').addClass('-' + plugin_name + '-fakeheader');
+                data.fakeHeader.css({
+                    position: 'absolute',
+                    top: 0,
+                    width: data.headers.width(),
+                    zIndex: data.settings.zIndex
+                });
+                target.data(plugin_name, data).children(0).eq(0).replaceWith(data.fakeHeader);
+            }
+        },
 				
 		// Contains events for this plugin.
 		events : {
@@ -89,7 +106,7 @@
 					 	if( top > data.containerTop ){
 					 		
 					 		data.fakeHeader.css('top',(top-height)-data.containerTop);
-					 		data.fakeHeader.html(prevHeader.html());
+					 		_private.updateHeader($this, prevHeader);
 					 		data.currentHeader = data.currentHeader-1;
 					 		trigger = true;
 					 	}
@@ -126,7 +143,7 @@
 						var $header = data.headers.eq(newHeader);
 						
 						data.currentHeader = newHeader;
-						data.fakeHeader.html($header.html());
+						_private.updateHeader($this, $header);
 						trigger = true;
 					}
 					
@@ -284,7 +301,7 @@
 							
 							// Set as the current header.
 							data.currentHeader = newHeader;
-							data.fakeHeader.html($header.html());
+							_private.updateHeader($this, $header);
 							
 							// Trigger the headingChange event.
 							$this.trigger('headingChange',[newHeader,$header]);
