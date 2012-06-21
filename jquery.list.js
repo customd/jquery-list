@@ -1,5 +1,5 @@
 /**
- * jQuery list plug-in 1.2.1
+ * jQuery list plug-in 1.2.2
  * Copyright 2012, Digital Fusion
  * Licensed under the MIT license.
  * http://teamdf.com/jquery-plugins/license/
@@ -13,7 +13,7 @@
 	// The name of your plugin. This is used to namespace your
 	// plugin methods, object data, and registerd events.
 	var plugin_name = 'list';
-	var plugin_version = '1.2.1';
+	var plugin_version = '1.2.2';
 	var plugin_logging = true;
 	
 	// Set up the plugin defaults.
