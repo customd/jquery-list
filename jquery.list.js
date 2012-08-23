@@ -20,10 +20,11 @@
 	// These will be stored in $this.data(plugin_name).settings,
 	// and can be overwritten by having 'options' passed through
 	// as the parameter to the init method.
-	var defaults = {
-		headerSelector	: 'dt',
-		zIndex			: 1
-	};
+  var defaults = {
+    headerSelector  : 'dt',
+    zIndex          : 1,
+    fakeHeaderClass : 'ui-' + plugin_name + '-fakeheader'
+  };
 	
 	var scrollTimeout = null;
 	
@@ -53,7 +54,7 @@
 		updateHeader: function(target, newHeader) {
             var data = target.data(plugin_name);
             if (data) {
-                data.fakeHeader = newHeader.clone().removeAttr('id').addClass('-' + plugin_name + '-fakeheader');
+                data.fakeHeader = newHeader.clone().removeAttr('id').addClass(data.settings.fakeHeaderClass);
                 data.fakeHeader.css({
                     position: 'absolute',
                     top: 0,
@@ -224,7 +225,7 @@
 					
 					// Grab some variables to set up the list.
 				    data.headers		= $this.find(data.settings.headerSelector);
-				    data.fakeHeader		= data.headers.eq(0).clone().removeAttr('id').addClass('-'+plugin_name+'-fakeheader');
+				    data.fakeHeader	= data.headers.eq(0).clone().removeAttr('id').addClass(data.settings.fakeHeaderClass);
 				    
 				    // bind a scroll event and change the text of the fake heading
 				    data.wrapper.bind('scroll.'+plugin_name,$.proxy(_private.events.scroll,$this)).css({
