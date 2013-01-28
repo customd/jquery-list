@@ -25,10 +25,10 @@
 		"scroll"
 	],
 	"homepage"		: "https://github.com/teamdf/jquery-list/",
-	"docs"			: "https://github.com/teamdf/jquery-list/tree/master/docs",
-	"demo"			: "https://github.com/teamdf/jquery-list/",
+	"docs"			: "http://opensource.teamdf.com/list/docs/",
+	"demo"			: "http://opensource.teamdf.com/list/examples/demo-basic.html",
 	"files"			: [
-		"jquery.list.js"
+		"jquery.list.js", "jquery.list.min.js"
 	],
 	"dependancies"	: {
 		"jquery" : ">1.6.0"
@@ -36,7 +36,7 @@
 	"licenses"		: [
 		{
 		    "type": "MIT",
-		    "url": "http://teamdf.com/jquery-plugins/license/"
+		    "url": "http://opensource.teamdf.com/license/"
 		}
 	]
 }

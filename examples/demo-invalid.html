@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>jQuery List Demo</title>
+		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+		<script type="text/javascript" src="http://www.teamdf.com/jquery-plugins/resources/javascripts/prettify.js"></script>
+		<script type="text/javascript" src="../jquery.list.js"></script>
+		
+		<script type="text/javascript">
+			
+			$(function(){
+				// Pretty print code blocks.
+				prettyPrint();
+				
+				// Initialise the list.
+				//$('#container dl').list();
+			});
+			
+		</script>
+		
+		<link rel="stylesheet" href="http://www.teamdf.com/jquery-plugins/resources/stylesheets/prettify.css" type="text/css" />
+		
+		<style>
+			body{
+				font-family: sans-serif;
+			}
+			pre.prettyprint{
+				padding: 10px;
+				font-family: monospace;
+				font-size: 9pt;
+				background: #f8f8f8;
+				border: 1px solid #e4e4e4;
+			}
+			dl.list{
+				border: 1px solid #2683BD;
+				max-height: 350px;
+				margin: 0;
+				padding: 0;
+				overflow: auto;
+				position: relative;
+				font-size: 1em;
+			}
+			dl.list dt{
+				margin: 0;
+				background: #2683BD url(http://www.teamdf.com/jquery-plugins/resources/images/overlay-sprite.png) repeat-x 0 -50px;
+				font-weight: bold;
+				text-shadow: -1px -1px 0px rgba( 0, 0, 0, 0.2 ), 1px 1px 0px rgba( 255, 255, 255, 0.3 );
+				color: white;
+				padding: 8px 5px;
+				border-bottom: 1px solid #1D6FA2;
+			}
+			dl.list dd{
+				padding: 5px;
+				margin: 0;
+				border-bottom: 1px solid #F2F6FB;
+				font-size: 0.8em;
+				color: #2A5673;
+			}
+		</style>
+	</head>
+	<body>
+		<h1><span style="color: red;">(Invalid Markup)</span> &lt;dt&gt; &amp; &lt;dl&gt;'s wrapped with &lt;div&gt;'s</h1>
+		<a href="../docs/index.html#demos">Back to Docs</a>
+		<p>An example built for <a href="https://github.com/anujgakhar">anujgakhar</a>. Demonstrates working plugin for GitHub <a href="https://github.com/teamdf/jquery-list/issues/3">Issue #3</a></p>
+		<pre class="prettyprint lang-javascript"><code>$('#container dl').list();</code></pre>
+		<div id="container">
+			<dl class="list">
+				<div>
+					<dt>List Title One</dt>
+					<dd>One</dd>
+					<dd>Two</dd>
+					<dd>Three</dd>
+					<dd>Four</dd>
+					<dd>Five</dd>
+					<dd>Six</dd>
+					<dd>Seven</dd>
+				</div>
+				<div>
+					<dt>List Title Two</dt>
+					<dd>One</dd>
+					<dd>Two</dd>
+				</div>
+				<div>
+					<dt>List Title Three</dt>
+					<dd>One</dd>
+					<dd>Two</dd>
+					<dd>Three</dd>
+					<dd>Four</dd>
+					<dd>Five</dd>
+					<dd>Six</dd>
+					<dd>Seven</dd>
+					<dd>Eight</dd>
+					<dd>Nine</dd>
+					<dd>Ten</dd>
+					<dd>Eleven</dd>
+					<dd>Twelve</dd>
+					<dd>Thirteen</dd>
+					<dd>Fourteen</dd>
+					<dd>Fifteen</dd>
+					<dd>Sixteen</dd>
+				</div>
+				<div>
+				<dt>List Title Four</dt>
+					<dd>One</dd>
+				</div>
+				<div>
+					<dt>List Title Five</dt>
+					<dd>One</dd>
+					<dd>Two</dd>
+					<dd>Three</dd>
+					<dd>Four</dd>
+				</div>
+				<div>
+					<dt>List Title Six</dt>
+					<dd>One</dd>
+					<dd>Two</dd>
+					<dd>Three</dd>
+					<dd>Four</dd>
+					<dd>Five</dd>
+					<dd>Six</dd>
+					<dd>Seven</dd>
+				</div>
+				<div>
+					<dt>List Title Seven</dt>
+					<dd>One</dd>
+					<dd>Two</dd>
+					<dd>Three</dd>
+					<dd>Four</dd>
+					<dd>Five</dd>
+					<dd>Six</dd>
+					<dd>Seven</dd>
+					<dd>Eight</dd>
+					<dd>Nine</dd>
+					<dd>Ten</dd>
+					<dd>Eleven</dd>
+					<dd>Twelve</dd>
+					<dd>Thirteen</dd>
+					<dd>Fourteen</dd>
+					<dd>Fifteen</dd>
+					<dd>Sixteen</dd>
+					<dd>Seventeen</dd>
+					<dd>Eighteen</dd>
+					<dd>Nineteen</dd>
+					<dd>Twenty</dd>
+				</div>
+				<div>
+					<dt>List Title Eight</dt>
+					<dd>One</dd>
+					<dd>Two</dd>
+					<dd>Three</dd>
+					<dd>Four</dd>
+					<dd>Five</dd>
+					<dd>Six</dd>
+					<dd>Seven</dd>
+					<dd>Eight</dd>
+					<dd>Nine</dd>
+					<dd>Ten</dd>
+				</div>
+				<div>
+				</div>
+				<div>
+					<dt>List Title Nine</dt>
+					<dd>One</dd>
+				</div>
+				<div>
+					<dt>List Title Ten</dt>
+					<dd>One</dd>
+					<dd>Two</dd>
+					<dd>Three</dd>
+					<dd>Four</dd>
+					<dd>Five</dd>
+					<dd>Six</dd>
+					<dd>Seven</dd>
+					<dd>Eight</dd>
+					<dd>Nine</dd>
+				</div>
+			</dl>
+		</div>
+		
+		<script type="text/javascript">
+			$('#container dl').list();
+		</script>
+	</body>
+</html>
