@@ -42,7 +42,7 @@
 							.addClass('inactive');
 												
 				// Initialise the list.
-				$('#countries').list().bind('headingChange',function(ele,index,$header,max){
+				$('#countries').list().on('headingChange',function(ele,index,$header,max){
 					
 					// Remove the inactive class, and add to the newly selected header.	
 					$('button',$buttons)
@@ -60,7 +60,7 @@
 				});
 				
 				// Add an event handler 
-				$('button',$buttons).live('click', function(){
+				$buttons.on('click', 'button', function(){
 					
 					// Scroll to the 
 					$('#countries').list( 'scrollTo', $(this).attr('data-header'), 'fast', 'swing' );

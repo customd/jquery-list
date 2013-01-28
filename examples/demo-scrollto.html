@@ -33,7 +33,7 @@
 				});
 				
 				// Add an event handler 
-				$('#buttons button').live('click', function(){
+				$(document).on('click', '#buttons button', function(){
 				
 					// Scroll to the selected element.
 					$('#countries').list( 'scrollTo', $(this).attr('data-header'), 'fast', 'swing' );
