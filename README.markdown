@@ -1,9 +1,11 @@
-Floating List Header Plugin
-===========================
+jQuery Floating/Fixed List Header Plugin
+========================================
 
 This is a [jQuery](http://jquery.com/) plugin which allows the user to create a list with 
 floating headings while scrolling, a-la iOS & iCal day view. The plugin allows arbitrary 
 markup of the header and list items, and will work nicely with nested elements. 
+
+- View at the [jQuery Plugin Registry](http://plugins.jquery.com/df-list/).
 
 Demos
 -----
